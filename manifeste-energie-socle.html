@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'Énergie comme socle : un projet de long terme pour la France</title>
+<style>
+  :root{
+    --ink:#12181f;
+    --ink-soft:#3a444e;
+    --paper:#f6f4ef;
+    --paper-2:#efece4;
+    --line:#d4cfc4;
+    --steel:#1f4e63;      /* bleu-acier, énergie/nucléaire */
+    --steel-deep:#0f2e3d;
+    --copper:#a8542a;     /* cuivre, industrie */
+    --sig:#c9a227;        /* laiton, accent rare */
+    --ok:#2f6d4f;
+    --warn:#9a5b1d;
+    --bad:#8f3524;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    line-height:1.62;
+    font-size:19px;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (max-width:640px){body{font-size:17px}}
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 26px}
+
+  /* --- HERO --- */
+  header.hero{
+    background:
+      linear-gradient(180deg, rgba(15,46,61,.03), rgba(15,46,61,0)),
+      var(--paper);
+    border-bottom:1px solid var(--line);
+    padding:64px 0 42px;
+  }
+  .kicker{
+    font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+    font-size:13px;letter-spacing:.14em;color:var(--steel);
+    font-weight:600;margin:0 0 22px;
+  }
+  .hero h1{
+    font-size:clamp(32px,6.2vw,58px);
+    line-height:1.04;margin:0 0 10px;font-weight:600;
+    letter-spacing:-.01em;color:var(--steel-deep);
+  }
+  .hero .sub{
+    font-size:clamp(19px,2.6vw,23px);
+    color:var(--ink-soft);margin:18px 0 0;max-width:46ch;
+  }
+  .hero .meta{
+    margin-top:30px;font-family:ui-sans-serif,system-ui,sans-serif;
+    font-size:14px;color:var(--ink-soft);border-top:1px solid var(--line);
+    padding-top:16px;
+  }
+
+  /* --- the physical claim, hero device --- */
+  .equation{
+    margin:40px 0 4px;padding:26px 28px;
+    background:var(--steel-deep);color:#eef3f5;border-radius:3px;
+  }
+  .equation .line{
+    font-size:clamp(20px,3.4vw,28px);line-height:1.25;font-weight:600;
+    letter-spacing:-.01em;
+  }
+  .equation .gloss{
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:14.5px;
+    color:#a9c2cd;margin-top:12px;line-height:1.5;
+  }
+
+  section{padding:44px 0;border-bottom:1px solid var(--line)}
+  section:last-of-type{border-bottom:none}
+  h2{
+    font-size:clamp(24px,3.6vw,32px);line-height:1.12;
+    color:var(--steel-deep);font-weight:600;margin:0 0 4px;letter-spacing:-.01em;
+  }
+  h2 .n{
+    display:block;font-family:ui-sans-serif,system-ui,sans-serif;
+    font-size:13px;letter-spacing:.13em;color:var(--copper);
+    font-weight:700;margin-bottom:12px;
+  }
+  h3{font-size:20px;color:var(--ink);margin:30px 0 6px;font-weight:600}
+  p{margin:14px 0}
+  a{color:var(--copper)}
+  strong{font-weight:600}
+  em.k{font-style:normal;background:linear-gradient(transparent 62%,rgba(201,162,39,.32) 0);}
+
+  .lead{font-size:clamp(19px,2.5vw,22px);color:var(--ink-soft)}
+
+  blockquote{
+    margin:26px 0;padding:18px 24px;border-left:3px solid var(--copper);
+    background:var(--paper-2);font-size:20px;color:var(--steel-deep);
+  }
+
+  /* honesty callouts */
+  .note{
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:15.5px;
+    line-height:1.55;margin:20px 0;padding:16px 18px;border-radius:3px;
+    border:1px solid var(--line);background:#fff;
+  }
+  .note b{display:block;margin-bottom:5px;letter-spacing:.02em}
+  .note.limit{border-left:4px solid var(--warn)}
+  .note.limit b{color:var(--warn)}
+  .note.strong{border-left:4px solid var(--ok)}
+  .note.strong b{color:var(--ok)}
+
+  /* flow diagram */
+  .flow{
+    margin:28px 0;padding:24px;background:#fff;border:1px solid var(--line);
+    border-radius:3px;font-family:ui-sans-serif,system-ui,sans-serif;
+  }
+  .flow .cap{font-size:12.5px;letter-spacing:.1em;color:var(--copper);font-weight:700;margin-bottom:16px}
+  .chain{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px}
+  .node{
+    flex:1 1 130px;min-width:120px;background:var(--paper-2);
+    border:1px solid var(--line);border-radius:3px;padding:12px 13px;
+    font-size:14px;line-height:1.35;color:var(--ink);
+  }
+  .node.acc{background:var(--steel);color:#fff;border-color:var(--steel)}
+  .node .num{font-weight:700;color:var(--copper);font-size:12px;display:block;margin-bottom:3px}
+  .node.acc .num{color:var(--sig)}
+  .lnk{align-self:center;color:var(--copper);font-weight:700;font-size:18px}
+
+  /* trajectory table */
+  table{width:100%;border-collapse:collapse;margin:24px 0;font-family:ui-sans-serif,system-ui,sans-serif;font-size:15px}
+  caption{caption-side:top;text-align:left;font-size:12.5px;letter-spacing:.1em;color:var(--copper);font-weight:700;margin-bottom:12px}
+  th,td{padding:11px 12px;text-align:right;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  thead th{color:var(--steel-deep);border-bottom:2px solid var(--steel);font-weight:700}
+  tbody tr:last-child td{border-bottom:none;font-weight:700;background:var(--paper-2)}
+  .pos{color:var(--ok);font-weight:600}
+
+  ul.clean{margin:14px 0;padding-left:0;list-style:none}
+  ul.clean li{position:relative;padding-left:26px;margin:12px 0}
+  ul.clean li::before{
+    content:"";position:absolute;left:2px;top:.62em;width:9px;height:9px;
+    background:var(--copper);transform:rotate(45deg);
+  }
+
+  .pillars{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;margin:26px 0}
+  .pillar{background:#fff;padding:20px 22px}
+  .pillar h3{margin:0 0 6px;color:var(--steel-deep)}
+  .pillar p{margin:0;font-size:16px;color:var(--ink-soft);font-family:ui-sans-serif,system-ui,sans-serif;line-height:1.5}
+  .pillar .tag{font-family:ui-sans-serif,system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--copper);display:block;margin-bottom:8px}
+
+  footer{background:var(--steel-deep);color:#cddbe1;padding:48px 0 60px}
+  footer .wrap{max-width:760px}
+  footer h2{color:#fff}
+  footer p{color:#aec4cd;font-size:16px}
+  footer .lic{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:#7f9aa6;border-top:1px solid #1f4353;margin-top:28px;padding-top:18px;line-height:1.55}
+
+  .disclaimer{
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;
+    color:var(--ink-soft);background:var(--paper-2);border:1px solid var(--line);
+    padding:16px 18px;border-radius:3px;margin:26px 0;line-height:1.55;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Note de travail : proposition citoyenne, ouverte au débat</p>
+    <h1>Faire de notre énergie<br>le socle du siècle qui vient</h1>
+    <p class="sub">La France entre dans une nouvelle révolution industrielle avec un atout que peu de pays possèdent. La question n'est pas de savoir si nous l'avons : c'est de savoir si nous saurons en faire un socle durable plutôt qu'un avantage gâché de plus.</p>
+
+    <div class="equation">
+      <div class="line">La croissance, c'est de l'énergie transformée par des machines.</div>
+      <div class="gloss">Le charbon a fait la puissance britannique au XIX<sup>e</sup>. Le pétrole a fait la puissance américaine au XX<sup>e</sup>. L'IA et la robotique ne sont, au fond, que des machines qui transforment de l'électricité en calcul et en travail. Le XXI<sup>e</sup> ira à qui maîtrise l'énergie décarbonée, stable et abondante.</div>
+    </div>
+    <p class="meta">Un document qui assume ce qu'il peut faire, le temps qu'il faut, et ses propres limites.</p>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <h2><span class="n">Le constat</span>Un atout réel, un pays qui n'en profite pas</h2>
+    <p class="lead">La France produit une électricité décarbonée à plus de 95 %, et, sur son parc nucléaire et hydraulique amorti, parmi les moins chères d'Europe de l'Ouest. Ce patrimoine a été payé par les générations précédentes.</p>
+    <p>Et pourtant : la dette dépasse 3 500 milliards d'euros, le déficit se creuse d'environ 150 milliards chaque année, les usines ferment, et le sentiment de déclassement gagne. Nous avons la bonne ressource, au bon moment, et nous la regardons filer, comme nous avons laissé filer d'autres avances par le passé.</p>
+    <p>Ce document part d'une conviction simple : l'énergie n'est pas un sujet parmi d'autres, c'est <em class="k">l'infrastructure de base de toute l'économie</em>. En faire le socle d'un projet de long terme, c'est le seul levier dont nous disposons encore qui soit à la fois puissant, souverain, et déjà là.</p>
+
+    <div class="note limit">
+      <b>Ce que ce document ne fera pas</b>
+      Il ne promet ni la suppression des impôts, ni un excédent budgétaire spectaculaire, ni la fin de la crise en un mandat. Ces promesses ne survivent pas au premier calcul. Une crise accumulée sur quarante ans ne s'efface pas en cinq. Ce qu'on peut faire, et que personne ne fait vraiment, c'est <b style="display:inline">inverser la pente</b>, et tenir assez longtemps pour que l'inversion devienne irréversible.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="n">Le retournement</span>Pourquoi l'avantage énergétique compte enfin</h2>
+    <p>Pendant quarante ans, on a délocalisé pour une raison : la main-d'œuvre coûtait moins cher ailleurs. La robotique et l'IA renversent ce calcul.</p>
+    <ul class="clean">
+      <li>Une machine (bras robotisé, serveur de calcul) coûte à peu près le même prix à l'achat qu'elle soit installée à Shanghai, à Austin ou à Lyon. Le coût du travail humain n'est plus le facteur qui décide.</li>
+      <li>Ce qui décide, pour une usine moderne ou un centre de calcul qui tourne 24 h sur 24, c'est le <strong>prix et la stabilité de l'électricité</strong>, et la proximité du marché. Produire en France, c'est produire au cœur du marché européen, sans transport lointain ni chaîne d'approvisionnement fragile.</li>
+    </ul>
+
+    <div class="note limit">
+      <b>Une nuance à assumer, pas à cacher</b>
+      L'électricité n'est pas encore le premier poste de coût de <em style="font-style:italic">toutes</em> les industries. L'argument est le plus fort pour les secteurs électro-intensifs (chimie, métallurgie, batteries), les centres de données et l'IA. C'est là qu'il faut viser d'abord, précisément, sans prétendre que l'énergie règle tout partout.
+    </div>
+
+    <div class="note strong">
+      <b>Où est réellement le gain pour le pays</b>
+      Pas dans une marge miraculeuse sur le mégawattheure : cette marge est modeste, quelques milliards, pas des dizaines. Le vrai gain, c'est <b style="display:inline">l'assiette élargie</b> : chaque usine qui s'installe paie de la TVA, de l'impôt, des cotisations, et retire des personnes du chômage. L'énergie est l'aimant ; la richesse vient de l'activité qu'il attire.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="n">La méthode</span>Simplifier, déplacer, ne laisser personne au bord</h2>
+    <p class="lead">On ne supprime pas les impôts : c'est impossible sans casser retraites et santé, qui sont l'essentiel de la dépense. On simplifie, on déplace la charge du travail vers la consommation, et on protège ceux qui en ont besoin.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <span class="tag">Simplifier</span>
+        <h3>Un État lisible et moins cher à gérer</h3>
+        <p>Fusionner les micro-taxes à faible rendement, rationaliser le mille-feuille territorial, revoir des marchés publics aux prix parfois prohibitifs, supprimer les comités qui coûtent plus qu'ils n'apportent. Gisement réel : de l'ordre de 15 à 30 milliards par an, mais à terme, sur 8 à 10 ans, pas au démarrage.</p>
+      </div>
+      <div class="pillar">
+        <span class="tag">Déplacer</span>
+        <h3>Le travail moins taxé, la consommation davantage</h3>
+        <p>Un allègement des charges sur les salaires, sans plafond qui créerait une trappe à bas salaires, financé par une TVA relevée, l'essentiel (alimentation, énergie de base) restant protégé. Le salarié garde plus ; le produit importé paie plein tarif à l'entrée.</p>
+      </div>
+      <div class="pillar">
+        <span class="tag">Protéger</span>
+        <h3>Des salaires qui ne se tassent plus</h3>
+        <p>Indexer les grilles conventionnelles sur le SMIC, en pourcentage. Un poste payé 15 % au-dessus du SMIC le reste à vie, au lieu d'être rattrapé par le bas après dix ans d'expérience. Coût zéro pour l'État : c'est l'employeur qui porte. Simple, clair, et cela répare une injustice que des millions de gens vivent sans la nommer.</p>
+      </div>
+      <div class="pillar">
+        <span class="tag">Assainir</span>
+        <h3>Fin des subventions déguisées</h3>
+        <p>Quand l'État complète les bas salaires ou les loyers, une part part en réalité vers l'employeur ou le bailleur. Sortir de cette logique, mais en traitant la cause : le salaire par l'indexation et le rapport de force collectif, le logement par un choc d'offre. Retirer sans remplacer laisserait des gens au bord ; ce n'est pas l'objectif.</p>
+      </div>
+    </div>
+
+    <div class="note limit">
+      <b>L'arbitrage qu'on ne peut pas esquiver</b>
+      Une fois tout additionné, ces mesures dégagent une marge nette modérée, de l'ordre d'une vingtaine de milliards par an à maturité. Cette marge ne peut pas aller à la fois au pouvoir d'achat <em style="font-style:italic">et</em> au désendettement. Il faut choisir la répartition, ouvertement. Il n'y a pas de repas gratuit ; il y a un choix assumé.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="n">La refondation sociale</span>Traiter les causes, pas subventionner les symptômes</h2>
+    <p class="lead">Quand l'État complète un salaire trop bas ou un loyer trop cher, il soulage sur le moment, mais une part du chèque part en réalité vers l'employeur ou le bailleur, et la cause, elle, demeure. On paie le problème sans le résoudre.</p>
+    <p>La bonne question n'est pas « comment financer l'aide ? » mais <em class="k">« pourquoi cette aide est-elle nécessaire ? »</em>, et on la pose jusqu'à toucher la racine. Prenons une mère à temps partiel qui dépend d'un complément de revenu :</p>
+
+    <div class="flow">
+      <div class="cap">Remonter à la cause : l'exemple de la garde d'enfants</div>
+      <div class="chain">
+        <div class="node"><span class="num">Pourquoi ?</span>Elle ne travaille pas plus car la garde annulerait son gain</div>
+        <div class="lnk">→</div>
+        <div class="node"><span class="num">Pourquoi ?</span>Les places de crèche, les moins chères, sont rares</div>
+        <div class="lnk">→</div>
+        <div class="node"><span class="num">Pourquoi ?</span>On n'en crée pas assez, à un coût maîtrisé</div>
+        <div class="lnk">→</div>
+        <div class="node acc"><span class="num">La racine</span>Décision diluée entre quatre échelons, normes jamais réexaminées</div>
+      </div>
+    </div>
+
+    <p>La cause n'est pas fiscale, elle est structurelle. Créer des places de garde à l'échelle n'est pas une dépense sociale : c'est un <strong>investissement à retour positif</strong> : une personne qui passe à temps plein cotise, consomme, et n'a plus besoin du complément. On ne supprime pas l'aide : on rend le besoin d'aide inutile. Le même raisonnement vaut pour le logement : libérer l'offre fait baisser les loyers, et l'aide au loyer s'éteint d'elle-même, à condition de traiter d'abord la cause.</p>
+
+    <div class="note strong">
+      <b>La ligne qui réconcilie</b>
+      Ce principe n'est ni de droite ni de gauche : on réduit les aides <em style="font-style:italic">et</em> on renforce la justice, en s'attaquant à ce qui rend les gens dépendants plutôt qu'en coupant les vivres. Moins de pansements parce que moins de plaies.
+    </div>
+
+    <div class="note limit">
+      <b>Deux garde-fous, honnêtement</b>
+      D'abord, on ne retire jamais un pansement avant que la plaie soit refermée : tant que les loyers n'ont pas baissé ou que les places n'existent pas, l'aide est maintenue, et un plancher garantit qu'aucun ménage ne bascule dans le rouge pendant la transition. Ensuite, il restera toujours des personnes (handicap, accident de vie) que nul remède structurel ne sort du besoin : pour elles, un filet solidaire solide demeure, sans condition. Traiter les causes pour ceux qu'on peut en sortir ; protéger sans faille ceux qu'on ne peut pas.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="n">Le moteur</span>La boucle qui fait grossir la marge avec le temps</h2>
+    <p>C'est ici que l'énergie change la donne, non par magie comptable, mais par enchaînement réel :</p>
+
+    <div class="flow">
+      <div class="cap">Comment une usine relocalisée finance le pays</div>
+      <div class="chain">
+        <div class="node"><span class="num">1</span>Énergie stable et compétitive, garantie par contrat long terme</div>
+        <div class="lnk">→</div>
+        <div class="node"><span class="num">2</span>Usines et centres de calcul s'installent en France</div>
+        <div class="lnk">→</div>
+        <div class="node"><span class="num">3</span>Emplois créés · chômage en baisse</div>
+        <div class="lnk">→</div>
+        <div class="node acc"><span class="num">4</span>Plus de cotisations, plus de TVA, moins d'allocations</div>
+      </div>
+    </div>
+
+    <p>L'électricité n'est pas vendue « à perte » ni « à prix d'or » : elle est proposée aux industriels qui s'implantent à un <strong>prix stable sur 15 ou 20 ans</strong>, en échange d'engagements d'emploi et d'investissement, la stabilité comptant, pour un industriel, autant que le niveau du prix.</p>
+
+    <div class="note limit">
+      <b>Le point le plus mal compris, et corrigé ici</b>
+      La tentation est de dire « les machines consomment de l'électricité, donc l'État se gave sur la marge ». C'est faux d'un large facteur. La marge sur le mégawattheure rapporte quelques milliards, pas des dizaines. Le moteur, ce n'est pas la facture d'électricité : c'est <b style="display:inline">l'économie réelle réactivée</b> : l'emploi, la TVA, l'impôt. Confondre les deux, c'est exactement l'erreur qui décrédibilise un plan entier.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="n">La trajectoire</span>Un marathon, pas un feu d'artifice</h2>
+    <p class="lead">Une usine met 3 à 5 ans entre la décision et la production. Ce qu'on sème l'année 1 se récolte l'année 5 ou 6. La trajectoire monte, mais elle demande de tenir la distance.</p>
+
+    <table>
+      <caption>Scénario prudent : marge dégagée pour les comptes publics (ordres de grandeur)</caption>
+      <thead>
+        <tr><th>Horizon</th><th>Emplois nets (cumul)</th><th>Marge annuelle</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Année 1–3</td><td>~120 000</td><td>~ +5 à +17 Md€</td></tr>
+        <tr><td>Année 5</td><td>~350 000</td><td class="pos">~ +27 Md€</td></tr>
+        <tr><td>Année 10</td><td>~950 000</td><td class="pos">~ +41 Md€</td></tr>
+      </tbody>
+    </table>
+
+    <p>À dix ans, dans ce scénario prudent : un pays qui a réindustrialisé, créé de l'emploi, rendu du pouvoir d'achat, et réduit son déficit d'environ un huitième, sans jamais toucher au financement des retraites et de la santé. Ce n'est pas l'abondance promise par les tribuns ; c'est un redressement réel, ce que la France n'a pas su faire depuis des décennies.</p>
+
+    <h3>Au-delà : les vents qui tournent à 20 ans</h3>
+    <ul class="clean">
+      <li><strong>Démographie.</strong> La pression des retraites culmine vers 2030-2035, puis se détend, mais le vrai soulagement n'arrive qu'après 2040, et l'allongement de la vie l'atténue. Vent favorable, pas miracle.</li>
+      <li><strong>Nouveau nucléaire.</strong> Les EPR2 n'entrent pas en service avant 2038, et produisent plus cher que le parc amorti. Ils sécurisent notre souveraineté et notre décarbonation ; ils ne baissent pas la facture. C'est le rôle d'un fonds dédié que de lisser ce coût.</li>
+      <li><strong>Automatisation.</strong> D'abord une alliée qui relocalise et crée de l'emploi ; à très long terme, une pression sur certains emplois. On y répond en taxant la valeur ajoutée et les bénéfices, pas « les robots », notion impossible à définir et dangereuse à taxer, car ce serait pénaliser la productivité même qui fait notre compétitivité.</li>
+    </ul>
+
+    <div class="disclaimer">
+      Sur la méthode : tous les chiffres de cette page sont des ordres de grandeur (marge d'incertitude réelle), calés sur les données publiques 2024-2025 (CRE, RTE, FIPECO, budget.gouv.fr). Ils indiquent des directions, pas des promesses au milliard près, surtout au-delà de dix ans, où personne ne peut prétendre chiffrer précisément. Un vrai budget suppose de recalculer chaque ligne sur les bases exactes. Ce document donne le raisonnement et l'échelle, pas un projet de loi de finances.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="n">Ce que ça change pour vous</span>Qui gagne, qui est exposé, sans rien cacher</h2>
+    <p class="lead">Un plan honnête montre ses gagnants <em style="font-style:italic">et</em> ses perdants. Voici, en ordres de grandeur, ce que la bascule produit pour quatre foyers. Ce qui pique est annoncé, pas dissimulé.</p>
+
+    <table>
+      <caption>Effet mensuel approximatif (hypothèses affichées plus bas)</caption>
+      <thead>
+        <tr><th>Foyer</th><th>Salaire allégé</th><th>Aides perdues</th><th>Solde/mois</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Électricien + 2 enfants, revenu moyen, sans aides</td><td>+ ~180 €</td><td>–</td><td class="pos">≈ +145 €</td></tr>
+        <tr><td>Deux actifs sans enfant, sans aides</td><td>+ ~225 €</td><td>–</td><td class="pos">≈ +180 €</td></tr>
+        <tr><td>Mi-temps bas salaire, touchait la prime d'activité</td><td>+ ~65 €</td><td>− ~180 €</td><td style="color:var(--warn)">≈ −125 €</td></tr>
+        <tr><td>Temps partiel + enfants, prime <em style="font-style:italic">et</em> APL</td><td>+ ~75 €</td><td>− ~450 €</td><td style="color:var(--bad)">≈ −390 €</td></tr>
+      </tbody>
+    </table>
+
+    <p>Le constat est net et il faut le regarder en face : ceux qui vivent de leur salaire y gagnent, souvent bien. Ceux qui dépendaient d'aides (les plus modestes, les temps partiels subis, les familles monoparentales) sont <strong>exposés</strong>, car la baisse de charges sur un petit revenu ne compense pas la perte d'un complément.</p>
+
+    <div class="note limit">
+      <b>C'est précisément là que le plan doit tenir sa promesse</b>
+      Personne ne bascule dans le rouge. Les aides ne sont retirées qu'au rythme où leur cause disparaît : les loyers qui baissent grâce à l'offre nouvelle, le passage au temps plein rendu possible par la garde, les salaires qui montent par l'indexation. Tant que ce rattrapage n'a pas eu lieu, un plancher de transition comble l'écart, foyer par foyer. La suppression des aides est l'aboutissement de la refondation, jamais son point de départ.
+    </div>
+
+    <div class="disclaimer">
+      Ces montants sont des ordres de grandeur sur des hypothèses de travail assumées : baisse des cotisations salariales de l'ordre de +7 % du net, TVA relevée à ~24 % sur le non-essentiel (alimentation de base et énergie protégées), suppression progressive de la prime d'activité et des APL. Les montants réels varient fortement selon le loyer, la zone, le nombre d'enfants et le salaire. Ce tableau montre le <em style="font-style:italic">sens</em> et l'<em style="font-style:italic">échelle</em> des effets, pas une fiche de paie individuelle.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="n">Se donner les moyens</span>Ce qu'on bâtit sur le socle</h2>
+    <p class="lead">L'énergie est notre infrastructure physique. L'éducation, la santé, la recherche, les réseaux sont notre infrastructure de société. Elles ont le même statut : sans elles, le socle ne porte rien. Ce projet les effleure ici ; chacune mérite ensuite d'être ouverte en grand.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <span class="tag">Former</span>
+        <h3>Les gens qui feront tourner les machines</h3>
+        <p>Une usine automatisée et un centre de calcul ont besoin de techniciens, d'ingénieurs, de spécialistes de l'énergie et de l'IA, que nous ne formons pas encore en nombre. Orienter l'école, l'apprentissage et l'université vers ces métiers, et retenir les talents plutôt que les voir partir, c'est la condition humaine de la réindustrialisation.</p>
+      </div>
+      <div class="pillar">
+        <span class="tag">Financer</span>
+        <h3>Le capital pour que les usines naissent</h3>
+        <p>L'énergie attire ; encore faut-il de l'argent patient pour bâtir. Mobiliser l'épargne des Français vers l'industrie et l'innovation nationales (un fonds souverain de l'énergie, un livret populaire fléché vers l'investissement) plutôt que de la laisser financer l'économie des autres.</p>
+      </div>
+      <div class="pillar">
+        <span class="tag">Raccorder</span>
+        <h3>Les réseaux, et la vitesse d'exécution</h3>
+        <p>Promettre une électricité compétitive ne sert à rien si l'on met six ans à raccorder un site quand un concurrent le fait en dix-huit mois. Réseau électrique, foncier disponible, transport, et surtout des délais administratifs enfin tenables : c'est là que se gagne ou se perd chaque implantation.</p>
+      </div>
+      <div class="pillar">
+        <span class="tag">Protéger la société</span>
+        <h3>Santé, services publics, cohésion</h3>
+        <p>Un pays qui réindustrialise n'a de sens que s'il soigne, éduque et protège les siens. La richesse produite doit servir à réparer ce qui s'est dégradé (hôpitaux, écoles, territoires) et non à creuser les fractures. Le progrès économique et la solidarité ne s'opposent pas : le premier finance la seconde.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="n">La condition</span>Bâtir un socle, pas un cycle de plus</h2>
+    <p class="lead">Le mal français n'est pas le manque d'idées. C'est qu'on recommence tout à chaque alternance, avant que rien n'ait eu le temps de produire ses effets.</p>
+    <p>Un plan qui paie à dix ans dans un pays qui change de cap tous les cinq ans ne paie jamais. La vraie difficulté n'est donc pas de démarrer fort : c'est de <em class="k">durer</em>. Trois conditions font qu'une réforme devient un socle et non un cycle de plus :</p>
+    <ul class="clean">
+      <li><strong>Des faits accomplis irréversibles.</strong> Une centrale construite, une usine implantée, une grille de salaire indexée : on ne les défait pas d'un trait de plume.</li>
+      <li><strong>Des gagnants concrets qui la défendent.</strong> Une région réindustrialisée, des salariés qui ont retrouvé un emploi grâce à elle, ont intérêt à ce qu'elle continue.</li>
+      <li><strong>Un cap au-dessus des camps.</strong> Le plan Messmer de 1974 a tenu parce qu'il est devenu un consensus tacite, pas la loi d'un seul bord. C'est le plus difficile, et c'est la vraie limite d'un mandat unique porté par une seule personne : il donne la force de frapper, pas la structure pour transmettre.</li>
+    </ul>
+    <blockquote>La récompense de ce plan est à quinze ans. Sa fragilité est de pouvoir être défait à cinq. Le concevoir pour survivre à celui qui le lance est aussi important que de le lancer.</blockquote>
+
+    <h3>Rendre le plan irréversible, concrètement</h3>
+    <p>Une idée ne dure pas parce qu'elle est bonne, mais parce qu'on l'a rendue coûteuse à défaire. Quatre leviers, du plus solide au plus fragile :</p>
+    <ul class="clean">
+      <li><strong>Construire avant de légiférer.</strong> Une centrale, une usine, une ligne raccordée sont là pour quarante ans. Le béton et l'acier survivent aux alternances mieux qu'un décret. Prioriser ce qui laisse une trace physique.</li>
+      <li><strong>Créer des bénéficiaires qui défendent.</strong> Une région qui a retrouvé ses emplois, une génération formée à ces métiers, des salariés dont la grille est indexée : autant de gens dont l'intérêt est que rien ne recule. Un acquis qu'on défendrait dans la rue est plus durable qu'une loi qu'on abroge en commission.</li>
+      <li><strong>Inscrire ce qui doit l'être au-dessus des lois ordinaires.</strong> Ce qui relève d'un cap de long terme (la trajectoire énergétique, la règle d'indexation) gagne à être placé dans un cadre pluriannuel contraignant, difficile à détricoter à la première majorité venue.</li>
+      <li><strong>Chercher le consensus, pas la victoire.</strong> Le plan Messmer de 1974 a tenu parce qu'aucun camp n'a eu intérêt à le renverser. Un projet conçu pour rallier au-delà d'un bord se défait moins vite qu'un projet imposé contre l'autre moitié du pays.</li>
+    </ul>
+
+    <div class="note limit">
+      <b>La tension à assumer : l'élan contre la durée</b>
+      Un mandat unique, porté par quelqu'un sans calcul de réélection, donne la force de frapper vite et sans compromis : c'est sa vertu. Mais il n'offre aucune structure pour transmettre : quand celui qui a lancé s'en va, qui porte l'héritage pendant les dix ans qui restent à courir ? Frapper fort et durer longtemps sont deux exigences contraires. Les réconcilier, bâtir vite <em style="font-style:italic">et</em> semer des relais qui survivent au fondateur, est la vraie difficulté politique de ce projet. Elle n'a pas de réponse toute faite ; elle doit être regardée en face avant de commencer, pas après.
+    </div>
+
+    <div class="note limit">
+      <b>Un socle ne suffit pas seul</b>
+      Le Royaume-Uni avait le charbon ; c'est l'écosystème autour (ingénieurs, capitaux, institutions, vitesse) qui en a fait une domination. La France peut avoir l'électricité la plus propre d'Europe et rater le virage sans les gens, l'argent et les réseaux pour l'exploiter. C'est l'objet de la section précédente : ce qu'on bâtit sur le socle compte autant que le socle.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <h2>Ce que nous proposons, en une phrase</h2>
+    <p style="font-size:20px;color:#dfe9ed;max-width:60ch">Utiliser le seul atout majeur qu'il nous reste, une énergie décarbonée, stable et souveraine, pour prendre le virage de la révolution industrielle qui vient, au lieu de la subir : simplifier l'État, déplacer la charge du travail vers la consommation, ramener les usines, et ne laisser personne au bord, honnêtement, sur le temps qu'il faut.</p>
+    <p class="lic">Document de travail ouvert, proposé au débat public. Les chiffres sont des ordres de grandeur sourcés (CRE, RTE, FIPECO, budget.gouv.fr, 2024-2025), destinés à être discutés et corrigés, non à être pris pour argent comptant. Un projet qui survit à la contradiction est le seul qui puisse changer quelque chose.</p>
+  </div>
+</footer>
+
+</body>
+</html>
